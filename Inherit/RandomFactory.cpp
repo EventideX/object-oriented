@@ -6,7 +6,15 @@ using namespace std;
 class Random
 {
 public:
-	int random() {}
+	Random() {}
+	virtual int random(int a, int b)
+	{
+		return 0;
+	}
+	virtual char random(char a)
+	{
+		return 0;
+	}
 };
 class RandomNumber :public Random
 {
@@ -78,12 +86,37 @@ public:
 		}
 	}
 };
-
+class RandomFactory
+{
+public:
+	RandomFactory() {}
+	Random *createRandom(const string &x)
+	{
+		if (x == "number")
+		{
+			return new RandomNumber;
+		}
+		else
+		{
+			if (x == "operator")
+			{
+				return new RandomOperation;
+			}
+			else
+			{
+				return NULL;
+			}
+		}
+	}
+};
 int main()
 {
-	RandomNumber x;
-	cout << x.random(0, 100) << endl;
-	RandomOperation y;
-	cout << y.random('y') << endl;
+	Random *z;
+	RandomFactory x;
+	z = x.createRandom("number");
+	cout << z->random(0, 100) << endl;
+	RandomFactory y;
+	z = y.createRandom("operator");
+	cout << z->random('y') << endl;
 	return 0;
 }
